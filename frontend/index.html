@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventra - Sistema de Gestión de Inventario</title>
+  
+  <!-- Hojas de Estilos Modulares Mate Minimalistas -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/views.css">
+</head>
+<body>
+  <div class="app-container">
+    <!-- Barra Lateral (Sidebar) -->
+    <aside class="app-sidebar">
+      <div class="sidebar-header" style="gap: 0.85rem; padding: 1.1rem 1.25rem;">
+        <div style="background-color: #0d1217; border: 1px solid #2a3744; border-radius: var(--radius-sm); padding: 3px 6px; display: flex; align-items: center; justify-content: center;">
+          <img src="assets/Inventra.png" alt="Inventra" style="height: 22px; width: auto; object-fit: contain;" />
+        </div>
+        <div>
+          <h1 class="brand-title" style="letter-spacing: -0.02em;">Inventra</h1>
+          <span class="brand-sub">Gestión Relacional MER</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Operaciones</div>
+        <a class="nav-link active" data-route="dashboard">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="svg-icon"><rect width="7" height="9" x="3" y="3" rx="1.5"/><rect width="7" height="5" x="14" y="3" rx="1.5"/><rect width="7" height="9" x="14" y="12" rx="1.5"/><rect width="7" height="5" x="3" y="16" rx="1.5"/></svg>
+          <span>Panel de Control</span>
+        </a>
+        <a class="nav-link" data-route="products">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="svg-icon"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+          <span>Productos</span>
+        </a>
+
+        <div class="nav-section-label">Seguridad & Accesos</div>
+        <a class="nav-link" data-route="users">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="svg-icon"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          <span>Usuarios</span>
+        </a>
+        <a class="nav-link" data-route="roles">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="svg-icon"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>Roles & Permisos</span>
+        </a>
+
+        <div class="nav-section-label">Arquitectura</div>
+        <a class="nav-link" data-route="mer">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="svg-icon"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M3 5V19A9 3 0 0 0 21 19V5"/><path d="M3 12A9 3 0 0 0 21 12"/></svg>
+          <span>Diagrama MER & API</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div id="sidebar-user-footer">
+          <!-- Inyección dinámica de sesión -->
+        </div>
+      </div>
+    </aside>
+
+    <!-- Contenido Principal -->
+    <main class="app-main">
+      <!-- Header Superior -->
+      <header class="app-header">
+        <div class="header-left">
+          <div class="page-title-wrap">
+            <h2 class="page-title" id="current-page-title">Panel de Control - Inventra</h2>
+            <span class="page-subtitle" id="current-page-subtitle">Visión general de existencias, usuarios y estado del sistema</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <span class="badge badge-neutral" style="font-family: var(--font-mono); font-size: 0.7rem;">
+            Tablas MER: 6
+          </span>
+          <span class="badge badge-primary" style="font-size: 0.7rem;">
+            Front-end Vanilla
+          </span>
+          <div id="header-user-profile">
+            <!-- Widget de perfil / inicio de sesión -->
+          </div>
+        </div>
+      </header>
+
+      <!-- Contenedor Dinámico de Vistas -->
+      <div class="view-container" id="main-view-container">
+        <!-- Inyección dinámica según la ruta activa -->
+      </div>
+    </main>
+  </div>
+
+  <!-- Contenedor para Notificaciones Toast -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Scripts Vanilla en orden de dependencia -->
+  <script src="js/icons.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/mockData.js"></script>
+  <script src="js/store.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/views/login.js"></script>
+  <script src="js/views/dashboard.js"></script>
+  <script src="js/views/products.js"></script>
+  <script src="js/views/users.js"></script>
+  <script src="js/views/roles.js"></script>
+  <script src="js/views/apiDocs.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

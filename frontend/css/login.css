@@ -1,0 +1,524 @@
+/* ==========================================================================
+   Estilos de la Página de Inicio de Sesión Separada (Login)
+   Integra la animación vectorial minimalista de Inventra y el formulario de acceso.
+   Cero emojis.
+   ========================================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body.login-body {
+  background-color: #0b0f14;
+  color: #f1f5f9;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", Roboto, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow-x: hidden;
+  padding: 1.5rem;
+}
+
+/* Contenedor Principal en Dos Columnas */
+.login-split-layout {
+  display: flex;
+  width: 100%;
+  max-width: 1080px;
+  min-height: 620px;
+  background-color: #121820;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Panel Izquierdo: Animación de la Marca */
+.login-brand-panel {
+  flex: 1.1;
+  background: radial-gradient(circle at center, #161f2b 0%, #0c1219 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2.5rem;
+  position: relative;
+}
+
+.brand-animation-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 420px;
+}
+
+.brand-animation-container svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.4));
+}
+
+/* --------------------------------------------------------------------------
+   Animaciones del Isotipo Inventra
+   -------------------------------------------------------------------------- */
+
+/* Trazo inicial de la caja */
+.box-path {
+  stroke: #ffffff;
+  stroke-width: 8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: #ffffff;
+  fill-opacity: 0;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: drawBox 1.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Relleno blanco sólido de la caja tras trazarse */
+.box-fill {
+  fill: #ffffff;
+  opacity: 0;
+  animation: fadeInFill 0.6s ease-out 1.2s forwards;
+}
+
+/* Portapapeles (Checklist) */
+.clipboard-frame {
+  fill: #0b0f14;
+  stroke: #ffffff;
+  stroke-width: 12;
+  stroke-linejoin: round;
+  transform-origin: 320px 250px;
+  transform: scale(0.6);
+  opacity: 0;
+  animation: popIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s forwards;
+}
+
+/* Clip superior */
+.clip {
+  fill: #0b0f14;
+  stroke: #ffffff;
+  stroke-width: 12;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transform-origin: 320px 250px;
+  transform: scale(0.6);
+  opacity: 0;
+  animation: popIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) 0.8s forwards;
+}
+
+/* Animación del checkmark */
+.checkmark {
+  stroke: #ffffff;
+  stroke-width: 18;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+  stroke-dasharray: 200;
+  stroke-dashoffset: 200;
+  animation: drawCheck 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.5s forwards;
+}
+
+/* Tipografía Inventra */
+.brand-name {
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Inter", "Segoe UI", sans-serif;
+  font-size: 82px;
+  font-weight: 700;
+  fill: #ffffff;
+  letter-spacing: -2px;
+  opacity: 0;
+  transform: translateY(15px);
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.7s forwards;
+}
+
+/* Flotación suave y continua de todo el isotipo */
+.floating-logo {
+  animation: subtleFloat 4.5s ease-in-out infinite 2.5s;
+  transform-origin: center;
+}
+
+@keyframes drawBox {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fadeInFill {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes popIn {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes drawCheck {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes subtleFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.brand-caption {
+  margin-top: 1.5rem;
+  font-size: 0.8125rem;
+  color: #8c9ba5;
+  text-align: center;
+  max-width: 320px;
+  line-height: 1.5;
+  opacity: 0;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2s forwards;
+}
+
+.brand-badges-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  opacity: 0;
+  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.2s forwards;
+}
+
+.brand-pill-tag {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.68rem;
+  background-color: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+}
+
+/* --------------------------------------------------------------------------
+   Panel Derecho: Formulario de Autenticación
+   -------------------------------------------------------------------------- */
+.login-form-panel {
+  flex: 1;
+  background-color: #121820;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 3rem 2.75rem;
+}
+
+.login-form-content {
+  width: 100%;
+  max-width: 380px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.form-header {
+  margin-bottom: 0.25rem;
+}
+
+.form-header h2 {
+  font-size: 1.45rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+}
+
+.form-header p {
+  font-size: 0.8125rem;
+  color: #8c9ba5;
+  margin-top: 0.35rem;
+}
+
+/* Alerta de Error en Login */
+.login-error-alert {
+  background-color: #2a1215;
+  border: 1px solid #742a2a;
+  color: #feb2b2;
+  border-radius: 6px;
+  padding: 0.75rem 0.85rem;
+  font-size: 0.775rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.login-error-alert .svg-icon {
+  width: 16px;
+  height: 16px;
+  color: #f87171;
+  flex-shrink: 0;
+}
+
+/* Inputs y Controles */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-group-dark {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-label-dark {
+  font-size: 0.775rem;
+  font-weight: 600;
+  color: #cbd5e1;
+}
+
+.form-label-dark.required::after {
+  content: " *";
+  color: #f87171;
+}
+
+.input-wrap-dark {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-wrap-dark .svg-icon {
+  position: absolute;
+  left: 0.85rem;
+  color: #64748b;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+.form-control-dark {
+  width: 100%;
+  background-color: #0b0f14;
+  border: 1px solid #2a3744;
+  color: #f8fafc;
+  padding: 0.6rem 0.75rem 0.6rem 2.45rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control-dark:focus {
+  border-color: #60a5fa;
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.15);
+}
+
+.form-control-dark::placeholder {
+  color: #475569;
+}
+
+.btn-toggle-pwd {
+  position: absolute;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s ease;
+}
+
+.btn-toggle-pwd:hover {
+  color: #cbd5e1;
+}
+
+.form-options-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.775rem;
+  color: #8c9ba5;
+  margin-top: -0.25rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.checkbox-label input {
+  accent-color: #3b82f6;
+  cursor: pointer;
+}
+
+.btn-submit-dark {
+  width: 100%;
+  background-color: #2563eb;
+  border: 1px solid #3b82f6;
+  color: #ffffff;
+  padding: 0.65rem 1rem;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-submit-dark:hover {
+  background-color: #1d4ed8;
+}
+
+.btn-submit-dark:active {
+  transform: translateY(1px);
+}
+
+.btn-submit-dark:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spinner-icon {
+  animation: spin 1s linear infinite;
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Cuentas de Demostración */
+.demo-accounts-dark {
+  background-color: #0b0f14;
+  border: 1px solid #1e293b;
+  border-radius: 8px;
+  padding: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.demo-title-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #64748b;
+}
+
+.demo-pills-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+}
+
+.demo-pill-btn {
+  background-color: #161f2b;
+  border: 1px solid #2a3744;
+  border-radius: 4px;
+  padding: 0.4rem 0.55rem;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.demo-pill-btn:hover {
+  background-color: #1e2c3d;
+  border-color: #60a5fa;
+}
+
+.demo-pill-btn.inactive:hover {
+  background-color: #2a1215;
+  border-color: #f87171;
+}
+
+.demo-pill-user {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.demo-pill-role {
+  font-size: 0.65rem;
+  color: #8c9ba5;
+}
+
+/* Enlace a Documentación */
+.login-bottom-links {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: #64748b;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.login-bottom-links a {
+  color: #93c5fd;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.login-bottom-links a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+/* Responsividad */
+@media (max-width: 860px) {
+  .login-split-layout {
+    flex-direction: column;
+    max-width: 480px;
+  }
+
+  .login-brand-panel {
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 2.5rem 1.5rem;
+  }
+
+  .login-form-panel {
+    padding: 2rem 1.75rem;
+  }
+
+  .brand-animation-container {
+    max-width: 320px;
+  }
+}
