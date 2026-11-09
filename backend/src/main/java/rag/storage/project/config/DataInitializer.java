@@ -76,10 +76,13 @@ public class DataInitializer {
                 rolRepo.saveAll(List.of(adminRol, encargadoRol, consultorRol));
             }
 
-            // Inicializar Usuario Administrador inicial para autenticación
-            if (usuarioRepo.count() == 0) {
-                Rol adminRol = rolRepo.findByNombre("ADMINISTRADOR").orElse(null);
+            // Inicializar un usuario de ejemplo para CADA rol del sistema
+            Rol adminRol = rolRepo.findByNombre("ADMINISTRADOR").orElse(null);
+            Rol encargadoRol = rolRepo.findByNombre("ENCARGADO_INVENTARIO").orElse(null);
+            Rol consultorRol = rolRepo.findByNombre("CONSULTOR").orElse(null);
 
+            // 1. Usuario con Rol ADMINISTRADOR (Control Total)
+            if (!usuarioRepo.existsByEmail("carlos.mendoza@empresa.com")) {
                 Usuario admin = Usuario.builder()
                         .nombre("Carlos Andrés Mendoza")
                         .email("carlos.mendoza@empresa.com")
@@ -87,8 +90,31 @@ public class DataInitializer {
                         .estado(true)
                         .roles(adminRol != null ? Set.of(adminRol) : Collections.emptySet())
                         .build();
-
                 usuarioRepo.save(admin);
+            }
+
+            // 2. Usuario con Rol ENCARGADO_INVENTARIO (Operaciones y Stock)
+            if (!usuarioRepo.existsByEmail("laura.gomez@empresa.com")) {
+                Usuario encargado = Usuario.builder()
+                        .nombre("Laura Sofía Gómez")
+                        .email("laura.gomez@empresa.com")
+                        .password(passwordEncoder.encode("password123"))
+                        .estado(true)
+                        .roles(encargadoRol != null ? Set.of(encargadoRol) : Collections.emptySet())
+                        .build();
+                usuarioRepo.save(encargado);
+            }
+
+            // 3. Usuario con Rol CONSULTOR (Solo Lectura)
+            if (!usuarioRepo.existsByEmail("diego.torres@empresa.com")) {
+                Usuario consultor = Usuario.builder()
+                        .nombre("Diego Alejandro Torres")
+                        .email("diego.torres@empresa.com")
+                        .password(passwordEncoder.encode("password123"))
+                        .estado(true)
+                        .roles(consultorRol != null ? Set.of(consultorRol) : Collections.emptySet())
+                        .build();
+                usuarioRepo.save(consultor);
             }
 
             // Nota: Productos arrancan en 0 (catálogo vacío para registro en vivo desde frontend)

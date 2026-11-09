@@ -49,13 +49,37 @@ El sistema está compuesto por cuatro componentes desacoplados:
 
 ---
 
+### 2. Configuración de Variables de Entorno (`.env.example` ➔ `.env`
+
+> En la raíz del proyecto se incluye el archivo de plantilla [`.env.example`](file:///c:/Users/Santiago%20Sarmiento/Desktop/RAG%20(Inventario)/.env.example). Para configurar tu entorno:
+
+1. **Copia la plantilla `.env.example` para crear tu `.env` local:**
+   
+   ```powershell
+   Copy-Item .env.example .env
+   ```
+   
+   *(O en Bash / Linux: `cp .env.example .env`)*
+   
+   **Estructura y variables explicadas:**
+
+> [!NOTE]
+> El archivo `.env` real está registrado en [`.gitignore`](file:///c:/Users/Santiago%20Sarmiento/Desktop/RAG%20(Inventario)/.gitignore), asegurando que ninguna credencial privada o contraseña de base de datos se suba accidentalmente a repositorios Git.
+
+---
+
 ## 🧠 Cómo Cargar los Datos en la Base Vectorial (Qdrant)
 
 Una base de datos vectorial no contiene datos por defecto; necesita un proceso de **ingesta y vectorización**. Para ello, se incluye el script automatizado [`poblar_qdrant.py`](file:///c:/Users/Santiago%20Sarmiento/Desktop/RAG%20(Inventario)/poblar_qdrant.py).
 
+> [!NOTE]
+> **Datos Simulados Basados en el Dominio Real del Proyecto:**  
+> Los registros cargados en Qdrant son **datos simulados**, pero diseñados y estructurados **estrictamente en base al dominio operativo, las reglas de inventario y el catálogo de Inventra**.  
+> No se trata de textos genéricos ni texto de relleno (*lorem ipsum*): cada registro modela casos de uso corporativos reales (computadoras empresariales, servidores en rack Dell, switches gestionables Cisco, discos SSD NVMe, periféricos, ubicaciones físicas en almacén por estante, precios reales en USD y disparadores de **Stock Crítico** cuando `stock <= stock_minimo`). Esto permite evaluar las capacidades analíticas y semánticas del Agente RAG ante escenarios idénticos a los de producción.
+
 ### ¿Qué hace este script?
 
-1. Toma un catálogo simulado y enriquecido de **8 productos corporativos** (ThinkPads, Servidores Rack Dell, Switches Cisco, Monitores 4K, SSDs NVMe) con sus especificaciones, ubicación en almacén, precios y estados de stock (incluyendo alertas de **Stock Crítico**).
+1. Toma este catálogo simulado y contextualizado de **8 productos corporativos de Inventra** con sus especificaciones completas, ubicación en almacén, precios y estados de stock (incluyendo alertas de **Stock Crítico**).
 2. Llama a la API oficial de NVIDIA con el modelo `nvidia/nemotron-3.5-embed-1b` para generar vectores reales de **2048 dimensiones**.
 3. Envía los productos de forma individual (`1x1`) con pausas de 150 ms para garantizar estabilidad y evitar errores `500` por sobrecarga de lote en la nube de NVIDIA.
 4. Almacena los puntos vectoriales en la colección `inventario_productos` de tu Qdrant local estructurados con las claves requeridas por n8n (`content`, `pageContent`, `text` y `metadata`).
@@ -104,18 +128,22 @@ Una base de datos vectorial no contiene datos por defecto; necesita un proceso d
 
 #### "workflow.json"
 
-
-
-
 Para conectar el Frontend con Qdrant y DeepSeek:
 
 1. **Nodos requeridos en n8n:**
+   
    * **Webhook:** Método `POST`, ruta `inventario-rag`, modo `Respond to Webhook Node`.
+   
    * **Agente RAG (`@n8n/n8n-nodes-langchain.agent`):** Texto de entrada `={{ $json.body.consulta }}`.
+   
    * **Herramienta Vector Store (`@n8n/n8n-nodes-langchain.toolVectorStore`):** Conectada a la entrada `ai_tool` del Agente.
+   
    * **Qdrant Vector Store:** Colección `inventario_productos`, conectada a la herramienta.
+   
    * **NVIDIA Nemotron Embeddings:** Modelo `nvidia/nemotron-3.5-embed-1b`, conectado a Qdrant.
+   
    * **DeepSeek Chat Model:** Modelo `deepseek-flash`, conectado al Agente y a la Herramienta.
+   
    * **Responder al Webhook:** Formato JSON:
      
      ```json
@@ -125,6 +153,7 @@ Para conectar el Frontend con Qdrant y DeepSeek:
        "timestamp": "={{ $now.toISO() }}"
      }
      ```
+
 2. **Activar el flujo:**  
    Pon el interruptor del workflow en **`Active`** (arriba a la derecha) para que quede escuchando en `http://localhost:5678/webhook/inventario-rag`.
 
@@ -145,6 +174,21 @@ cd backend
 
 Sirve la carpeta `frontend/` mediante cualquier servidor estático local (por ejemplo, con la extensión **Live Server** de VS Code o ejecutando `npx serve frontend -p 5500`):
 *Abre tu navegador en `http://localhost:5500`.*
+
+---
+
+## 👥 Usuarios de Demostración por Rol (Sembrados Automáticamente)
+
+Al iniciar el backend, la clase [`DataInitializer.java`](file:///c:/Users/Santiago%20Sarmiento/Desktop/RAG%20(Inventario)/backend/src/main/java/rag/storage/project/config/DataInitializer.java) inicializa automáticamente los permisos, roles y **un usuario de prueba para cada rol del sistema**:
+
+| Rol                        | Usuario de Prueba            | Contraseña    | Capacidades y Alcance                                                                  |
+|:-------------------------- |:---------------------------- |:------------- |:-------------------------------------------------------------------------------------- |
+| **`ADMINISTRADOR`**        | `carlos.mendoza@empresa.com` | `password123` | Control total del sistema, administración de usuarios, asignación de roles y catálogo. |
+| **`ENCARGADO_INVENTARIO`** | `laura.gomez@empresa.com`    | `password123` | Gestión operativa de productos: creación, edición, bajas y ajustes manuales de stock.  |
+| **`CONSULTOR`**            | `diego.torres@empresa.com`   | `password123` | Perfil de solo lectura: consulta de existencias, precios, métricas y reportes.         |
+
+> [!TIP]
+> En la pantalla de inicio de sesión ([`frontend/login.html`](file:///c:/Users/Santiago%20Sarmiento/Desktop/RAG%20(Inventario)/frontend/login.html)) puedes hacer clic directamente sobre cualquiera de las 3 tarjetas de usuario para autocompletar el formulario y probar la aplicación con los diferentes niveles de acceso.
 
 ---
 

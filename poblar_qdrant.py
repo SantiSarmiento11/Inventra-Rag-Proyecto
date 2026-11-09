@@ -1,3 +1,17 @@
+"""
+========================================================================================
+POBLADO VECTORIAL DE QDRANT - PLATAFORMA INVENTRA
+========================================================================================
+Los datos inyectados en este script son DATOS SIMULADOS pero construidos estrictamente
+en base al modelo de negocio, catálogo tecnológico corporativo y reglas de stock de Inventra:
+- Códigos corporativos estandarizados (PROD-001 al PROD-008).
+- Categorías reales: Computación, Monitores, Periféricos, Servidores, Redes y Almacenamiento.
+- Reglas de 'Stock Crítico' operativas (cuando stock <= stock_minimo).
+- Precios de mercado reales en USD, ubicaciones físicas de estantería y especificaciones técnicas.
+- Vectorización real con NVIDIA Nemotron 3.5 Embed 1B (2048 dimensiones).
+========================================================================================
+"""
+
 import sys
 import json
 import time

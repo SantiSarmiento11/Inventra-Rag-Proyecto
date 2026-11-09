@@ -11,6 +11,10 @@ El frontend es una aplicación de una sola página (**SPA**) construida en JavaS
 * **Configuración Central (`frontend/js/config.js`):** Gestiona las URLs base del backend, rutas de endpoints, almacenamiento seguro de sesión (`JWT Token`) y configuración del Webhook para el RAG.
 * **Capa de Servicios REST (`frontend/js/api.js`):** Cliente HTTP basado en `fetch` con interceptores para inyección de cabeceras `Authorization: Bearer <token>`, manejo unificado de errores y control de expiración de sesión (código `401 Unauthorized`).
 
+> [!NOTE]
+> **Configuración del Entorno y CORS:**  
+> Para que el navegador permita la comunicación entre el frontend (`http://localhost:5500`) y el backend (`http://localhost:8080`), la variable `CORS_ALLOWED_ORIGINS` debe estar habilitada en el archivo `.env` del backend (tomando como referencia la plantilla [`.env.example`](file:///c:/Users/Santiago%20Sarmiento/Desktop/RAG%20(Inventario)/.env.example)). Si esta variable no incluye el puerto del frontend, las peticiones HTTP serán bloqueadas por la política de mismo origen del navegador.
+
 ---
 
 ## 2. Endpoints del Backend Spring Boot (PostgreSQL)
@@ -23,6 +27,14 @@ Todas las rutas operan bajo la URL base por defecto: `http://localhost:8080/api`
   * **Respuesta:** `{ "token": "jwt...", "user": { "id_usuario": 1, "nombre": "...", "email": "...", "roles": [...] } }`
 * **`GET /auth/me`**: Validación del token actual y perfil del usuario autenticado.
 * **`POST /auth/logout`**: Cierre de sesión e invalidación de token local.
+
+#### Usuarios Iniciales de Demostración por Rol (Sembrados por `DataInitializer.java`):
+
+| Rol | Nombre | Correo Electrónico | Contraseña | Alcance de Permisos |
+| :--- | :--- | :--- | :--- | :--- |
+| **`ADMINISTRADOR`** | Carlos Andrés Mendoza | `carlos.mendoza@empresa.com` | `password123` | Control total del sistema, administración de usuarios y catálogo |
+| **`ENCARGADO_INVENTARIO`** | Laura Sofía Gómez | `laura.gomez@empresa.com` | `password123` | Operaciones de inventario: altas, bajas, edición y ajustes de stock |
+| **`CONSULTOR`** | Diego Alejandro Torres | `diego.torres@empresa.com` | `password123` | Modo solo lectura: visualización de existencias, precios y reportes |
 
 ### 2.2. Gestión de Productos (`productos`)
 * **`GET /productos`**: Lista completa del catálogo de productos con stock, precio y estado.
@@ -96,6 +108,11 @@ Una base de datos vectorial no lee directamente tablas relacionales SQL. Para qu
 
 ### 4.1. El Generador de Ingesta: `poblar_qdrant.py`
 Se dispone del script [`poblar_qdrant.py`](file:///c:/Users/Santiago%20Sarmiento/Desktop/RAG%20(Inventario)/poblar_qdrant.py) que realiza una carga simulada y enriquecida del catálogo hacia Qdrant.
+
+> [!NOTE]
+> **Datos Simulados pero Basados Fielmente en el Proyecto:**  
+> Aunque los datos indexados en la base vectorial son generados de manera simulada para independizar la carga y pruebas del RAG, **están concebidos directamente a partir del modelo de negocio, catálogo tecnológico y reglas de existencias de Inventra**.  
+> No son textos de prueba abstractos: reproducen el formato exacto del inventario empresarial (códigos formales `PROD-001` a `PROD-008`, categorías como Computación, Monitores, Servidores, Redes y Almacenamiento, precios reales, descripciones técnicas ricas y condiciones de **Stock Crítico** donde `stock <= stock_minimo`) para validar que las respuestas del LLM correspondan con fidelidad absoluta a la realidad del sistema.
 
 1. **Datos Simulados Inyectados:**
    * 8 registros de productos de tecnología corporativa (Laptops ThinkPad, Servidores Rack Dell PowerEdge, Switches Cisco Catalyst, Monitores 4K UHD, SSDs NVMe Samsung, Periféricos Logitech).
