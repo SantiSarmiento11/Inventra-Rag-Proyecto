@@ -271,6 +271,40 @@
             stockBajo: 2,
             stockAgotado: 1
           }
+        },
+        // Integración RAG & n8n (Endpoint de Consultas)
+        {
+          id: 'ep-post-rag-consulta',
+          method: 'POST',
+          path: '/rag/consulta',
+          table: 'RAG / n8n',
+          desc: 'Endpoint de consulta RAG para n8n: envía la pregunta del usuario junto al contexto enriquecido del inventario para ser procesado por el workflow de IA.',
+          requestExample: {
+            consulta: "¿Cuáles productos tienen stock crítico y requieren reposición inmediata?",
+            endpoint: "/rag/consulta",
+            timestamp: "2026-11-08T18:00:00Z",
+            usuario: {
+              id_usuario: 1,
+              email: "carlos.mendoza@empresa.com",
+              roles: ["ADMINISTRADOR"]
+            },
+            contexto_inventario: {
+              total_productos: 14,
+              stock_total: 198,
+              valor_monetario_total: 18240.00,
+              catalogo: [
+                { id: 1, nombre: "Laptop ThinkPad T14", precio: 1249.99, stock: 2, estado: "Activo" }
+              ]
+            }
+          },
+          responseExample: {
+            ok: true,
+            canal: "n8n_live",
+            duracion: "380ms",
+            pregunta: "¿Cuáles productos tienen stock crítico y requieren reposición inmediata?",
+            respuesta: "Se identificaron 2 productos en estado de alerta: Laptop ThinkPad T14 (Stock: 2 uds) y Monitor 27\" (Stock: 1 ud).",
+            fuente: "Workflow n8n (http://localhost:5678/webhook/inventario-rag)"
+          }
         }
       ];
 
@@ -349,8 +383,7 @@
             </div>
 
             <select class="form-control" id="backend-mode-select" style="width: auto; font-weight: 600;">
-              <option value="mock" ${apiMode === 'mock' ? 'selected' : ''}>Modo Simulado (Local)</option>
-              <option value="live" ${apiMode === 'live' ? 'selected' : ''}>Modo API Real (Backend)</option>
+              <option value="live" selected>Modo API Real (Spring Boot + PostgreSQL)</option>
             </select>
 
             <button class="btn btn-secondary btn-sm" id="btn-save-api-config">

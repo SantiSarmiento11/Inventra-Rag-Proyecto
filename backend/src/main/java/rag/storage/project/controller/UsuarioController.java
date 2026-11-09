@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import rag.storage.project.dto.RolDTO;
 import rag.storage.project.dto.UsuarioRequestDTO;
 import rag.storage.project.dto.UsuarioResponseDTO;
 import rag.storage.project.entity.Rol;
@@ -144,6 +145,18 @@ public class UsuarioController {
                 ? u.getRoles().stream().map(Rol::getNombre).toList()
                 : Collections.emptyList();
 
+        List<Long> roleIds = u.getRoles() != null
+                ? u.getRoles().stream().map(Rol::getIdRol).toList()
+                : Collections.emptyList();
+
+        List<RolDTO> roleDetails = u.getRoles() != null
+                ? u.getRoles().stream().map(r -> RolDTO.builder()
+                .idRol(r.getIdRol())
+                .nombre(r.getNombre())
+                .descripcion(r.getDescripcion())
+                .build()).toList()
+                : Collections.emptyList();
+
         return UsuarioResponseDTO.builder()
                 .idUsuario(u.getIdUsuario())
                 .nombre(u.getNombre())
@@ -151,6 +164,8 @@ public class UsuarioController {
                 .estado(u.getEstado())
                 .fechaCreacion(u.getFechaCreacion())
                 .roles(roleNames)
+                .roleIds(roleIds)
+                .rolesDetail(roleDetails)
                 .build();
     }
 }

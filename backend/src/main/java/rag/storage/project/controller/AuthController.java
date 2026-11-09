@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import rag.storage.project.dto.AuthResponse;
 import rag.storage.project.dto.LoginRequest;
+import rag.storage.project.dto.RolDTO;
 import rag.storage.project.dto.UsuarioResponseDTO;
 import rag.storage.project.entity.Rol;
 import rag.storage.project.entity.Usuario;
@@ -63,14 +64,7 @@ public class AuthController {
 
             String token = jwtService.generateToken(userDetails, usuario.getIdUsuario(), roleNames);
 
-            UsuarioResponseDTO userDto = UsuarioResponseDTO.builder()
-                    .idUsuario(usuario.getIdUsuario())
-                    .nombre(usuario.getNombre())
-                    .email(usuario.getEmail())
-                    .estado(usuario.getEstado())
-                    .fechaCreacion(usuario.getFechaCreacion())
-                    .roles(roleNames)
-                    .build();
+            UsuarioResponseDTO userDto = toDTO(usuario);
 
             return ResponseEntity.ok(AuthResponse.builder()
                     .token(token)
@@ -92,22 +86,40 @@ public class AuthController {
         Usuario usuario = usuarioRepository.findByEmail(userDetails.getUsername())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
 
+        return ResponseEntity.ok(toDTO(usuario));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Map<String, String>> logout() {
+        return ResponseEntity.ok(Map.of("message", "Sesión finalizada exitosamente"));
+    }
+
+    private UsuarioResponseDTO toDTO(Usuario usuario) {
         List<String> roleNames = usuario.getRoles() != null
                 ? usuario.getRoles().stream().map(Rol::getNombre).toList()
                 : Collections.emptyList();
 
-        return ResponseEntity.ok(UsuarioResponseDTO.builder()
+        List<Long> roleIds = usuario.getRoles() != null
+                ? usuario.getRoles().stream().map(Rol::getIdRol).toList()
+                : Collections.emptyList();
+
+        List<RolDTO> roleDetails = usuario.getRoles() != null
+                ? usuario.getRoles().stream().map(r -> RolDTO.builder()
+                .idRol(r.getIdRol())
+                .nombre(r.getNombre())
+                .descripcion(r.getDescripcion())
+                .build()).toList()
+                : Collections.emptyList();
+
+        return UsuarioResponseDTO.builder()
                 .idUsuario(usuario.getIdUsuario())
                 .nombre(usuario.getNombre())
                 .email(usuario.getEmail())
                 .estado(usuario.getEstado())
                 .fechaCreacion(usuario.getFechaCreacion())
                 .roles(roleNames)
-                .build());
-    }
-
-    @PostMapping("/logout")
-    public ResponseEntity<Map<String, String>> logout() {
-        return ResponseEntity.ok(Map.of("message", "Sesión finalizada exitosamente"));
+                .roleIds(roleIds)
+                .rolesDetail(roleDetails)
+                .build();
     }
 }

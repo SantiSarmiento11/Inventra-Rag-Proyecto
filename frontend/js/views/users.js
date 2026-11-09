@@ -51,7 +51,7 @@
             .join('');
 
           const rolesBadges = user.roles && user.roles.length > 0
-            ? user.roles.map((r) => `<span class="badge badge-primary">${escapeHtml(r.nombre)}</span>`).join(' ')
+            ? user.roles.map((r) => `<span class="badge badge-primary">${escapeHtml(typeof r === 'string' ? r : (r.nombre || r))}</span>`).join(' ')
             : `<span class="badge badge-neutral" style="font-size: 0.65rem;">Sin rol asignado</span>`;
 
           return `
@@ -211,7 +211,9 @@
       const isEdit = Boolean(user);
       const title = isEdit ? `Editar Usuario #${user.id_usuario}` : 'Registrar Nuevo Usuario';
 
-      const userRoleIds = user && user.roles ? user.roles.map((r) => r.id_rol) : [];
+      const userRoleIds = user && user.roleIds
+        ? user.roleIds
+        : (user && user.roles ? user.roles.map((r) => typeof r === 'object' ? r.id_rol : null).filter(Boolean) : []);
 
       const roleCheckboxes = allRoles.map((r) => `
         <label class="perm-checkbox-item">

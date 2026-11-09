@@ -58,9 +58,9 @@
       </p>
 
       <div class="brand-badges-row">
-        <span class="brand-pill-tag">Modelo Relacional MER</span>
-        <span class="brand-pill-tag">Control RBAC</span>
-        <span class="brand-pill-tag">API REST</span>
+        <span class="brand-pill-tag">PostgreSQL / Spring Boot</span>
+        <span class="brand-pill-tag">JWT Bearer</span>
+        <span class="brand-pill-tag">CORS: 5500</span>
       </div>
     </section>
 
@@ -69,7 +69,7 @@
       <div class="login-form-content">
         <div class="form-header">
           <h2>Iniciar Sesión</h2>
-          <p>Accede con tus credenciales registradas en la tabla usuarios</p>
+          <p>Autenticación en vivo contra el backend de Spring Boot</p>
         </div>
 
         <!-- Banner de Error de Autenticación -->
@@ -95,7 +95,7 @@
                 required
                 autocomplete="email"
                 placeholder="usuario@empresa.com"
-                value="carlos.mendoza@empresa.com"
+                value=""
               />
             </div>
           </div>
@@ -117,7 +117,7 @@
                 required
                 autocomplete="current-password"
                 placeholder="Ingresa tu contraseña"
-                value="password123"
+                value=""
               />
               <button type="button" class="btn-toggle-pwd" id="btn-toggle-password" title="Alternar visibilidad">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="svg-icon" id="eye-icon">
@@ -143,29 +143,18 @@
           </button>
         </form>
 
-        <!-- Selector Rápido de Cuentas Demo del MER -->
+        <!-- Indicador de conexión en vivo -->
         <div class="demo-accounts-dark">
           <div class="demo-title-bar">
-            <span>Cuentas de Prueba (MER)</span>
-            <span style="color: #60a5fa;">1-Clic</span>
+            <span>Autenticación Real (Backend)</span>
+            <span style="color: #10b981;">En vivo</span>
           </div>
-          <div class="demo-pills-container">
-            <button type="button" class="demo-pill-btn" data-email="carlos.mendoza@empresa.com" data-role="ADMINISTRADOR">
-              <span class="demo-pill-user">Carlos Mendoza</span>
-              <span class="demo-pill-role">Admin</span>
-            </button>
-            <button type="button" class="demo-pill-btn" data-email="elena.ramos@empresa.com" data-role="ENCARGADO_INVENTARIO">
-              <span class="demo-pill-user">Elena Ramos</span>
-              <span class="demo-pill-role">Inventario</span>
-            </button>
-            <button type="button" class="demo-pill-btn" data-email="m.restrepo@empresa.com" data-role="CONSULTOR">
-              <span class="demo-pill-user">Mauricio Restrepo</span>
-              <span class="demo-pill-role">Consultor</span>
-            </button>
-            <button type="button" class="demo-pill-btn inactive" data-email="diana.torres@empresa.com" data-role="INACTIVO" title="Prueba el bloqueo de seguridad para cuentas inactivas">
-              <span class="demo-pill-user">Diana Torres</span>
-              <span class="demo-pill-role" style="color: #f87171;">Inactiva (Bloqueo)</span>
-            </button>
+          <p style="font-size: 0.75rem; color: #94a3b8; margin: 0.5rem 0 0.25rem 0; line-height: 1.4;">
+            El acceso requiere validación directa en el backend con token JWT. Cuenta administradora por defecto:
+          </p>
+          <div style="font-family: ui-monospace, monospace; font-size: 0.72rem; background: #0f172a; padding: 0.5rem; border-radius: 6px; border: 1px solid #1e293b; color: #cbd5e1;">
+            <div><strong>Email:</strong> carlos.mendoza@empresa.com</div>
+            <div><strong>Clave:</strong> password123</div>
           </div>
         </div>
 
@@ -185,12 +174,20 @@
   <script src="js/api.js"></script>
 
   <script>
-    (function () {
-      // Si el usuario ya está autenticado, redirigir directamente a la página principal
-      const existingUser = window.API_CONFIG.getCurrentUser();
-      if (existingUser) {
-        // Permitir continuar a la aplicación
-        console.log('Sesión activa encontrada para:', existingUser.nombre);
+    (async function () {
+      // Verificar si hay sesión activa válida consultando al backend
+      const token = window.API_CONFIG.getToken();
+      if (token) {
+        try {
+          const user = await window.ApiService.getMe();
+          if (user && user.id_usuario) {
+            window.location.replace('index.html#dashboard');
+            return;
+          }
+        } catch (e) {
+          // Token expirado o inválido: limpiar sesión y continuar en login
+          window.API_CONFIG.clearSession();
+        }
       }
 
       const form = document.getElementById('standalone-login-form');
@@ -213,20 +210,10 @@
 
       // Olvido de contraseña
       document.getElementById('btn-forgot-pwd').addEventListener('click', function () {
-        alert('Para reestablecer tu clave de acceso en el MER, contacta a un usuario con el rol ADMINISTRADOR.');
+        alert('Para reestablecer tu clave de acceso en PostgreSQL, contacta a un usuario con el rol ADMINISTRADOR.');
       });
 
-      // Selector de cuentas demo con 1 clic
-      document.querySelectorAll('.demo-pill-btn').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          emailInput.value = btn.getAttribute('data-email');
-          passwordInput.value = 'password123';
-          errorBox.style.display = 'none';
-          emailInput.focus();
-        });
-      });
-
-      // Procesamiento de Login
+      // Procesamiento de Login conectándose al backend
       form.addEventListener('submit', async function (e) {
         e.preventDefault();
         errorBox.style.display = 'none';
@@ -242,7 +229,7 @@
 
         // Estado de carga
         submitBtn.disabled = true;
-        btnText.textContent = 'Verificando...';
+        btnText.textContent = 'Verificando con backend...';
         btnSpinner.style.display = 'inline-block';
 
         try {
@@ -264,7 +251,7 @@
             btnSpinner.style.display = 'none';
           }
         } catch (err) {
-          errorMsg.textContent = err.message || 'Error de conexión con el endpoint de autenticación.';
+          errorMsg.textContent = err.message || 'Error de conexión con el backend de Spring Boot en ' + window.API_CONFIG.getBaseUrl();
           errorBox.style.display = 'flex';
           submitBtn.disabled = false;
           btnText.textContent = 'Acceder a la Plataforma';

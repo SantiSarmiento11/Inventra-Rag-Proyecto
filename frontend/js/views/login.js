@@ -1,8 +1,7 @@
 /**
  * Vista de Inicio de Sesión (Login)
- * Integra la identidad corporativa de Inventra (analizada en /assets/Inventra.png)
- * y la autenticación contra la tabla usuarios y sus roles asignados.
- * Cero emojis.
+ * Autenticación real contra el Backend Spring Boot y PostgreSQL.
+ * Cero simulación.
  */
 
 (function () {
@@ -45,7 +44,7 @@
                       placeholder="usuario@empresa.com"
                       required
                       autocomplete="email"
-                      value="carlos.mendoza@empresa.com"
+                      value=""
                     />
                   </div>
                 </div>
@@ -65,7 +64,7 @@
                       placeholder="Ingresa tu contraseña"
                       required
                       autocomplete="current-password"
-                      value="password123"
+                      value=""
                     />
                     <button type="button" class="btn-toggle-password" id="btn-toggle-pwd" title="Mostrar u ocultar contraseña">
                       ${icons.get('eye')}
@@ -78,7 +77,7 @@
                     <input type="checkbox" id="login-remember" checked />
                     <span style="color: var(--text-secondary);">Mantener sesión iniciada</span>
                   </label>
-                  <span class="badge badge-neutral" style="font-size: 0.65rem;">tabla: usuarios</span>
+                  <span class="badge badge-neutral" style="font-size: 0.65rem;">POST /api/auth/login</span>
                 </div>
 
                 <button type="submit" class="btn btn-primary btn-login-submit" id="btn-submit-login">
@@ -87,29 +86,14 @@
                 </button>
               </form>
 
-              <!-- Selector Rápido de Cuentas Demo del MER -->
-              <div class="demo-accounts-card">
-                <div class="demo-accounts-header">
-                  <span>Cuentas de Demostración (MER)</span>
-                  <span class="badge badge-primary" style="font-size: 0.62rem;">1-Clic</span>
+              <!-- Información de Conexión Real -->
+              <div class="demo-accounts-card" style="padding: 0.75rem;">
+                <div class="demo-accounts-header" style="margin-bottom: 0.25rem;">
+                  <span>Autenticación Real en Vivo</span>
+                  <span class="badge badge-success" style="font-size: 0.62rem;">JWT</span>
                 </div>
-                <div class="demo-accounts-grid">
-                  <button type="button" class="demo-btn-pill" data-email="carlos.mendoza@empresa.com" data-role="ADMINISTRADOR">
-                    <span class="demo-btn-name">Carlos Mendoza</span>
-                    <span class="demo-btn-role">Admin</span>
-                  </button>
-                  <button type="button" class="demo-btn-pill" data-email="elena.ramos@empresa.com" data-role="ENCARGADO_INVENTARIO">
-                    <span class="demo-btn-name">Elena Ramos</span>
-                    <span class="demo-btn-role">Inventario</span>
-                  </button>
-                  <button type="button" class="demo-btn-pill" data-email="m.restrepo@empresa.com" data-role="CONSULTOR">
-                    <span class="demo-btn-name">Mauricio Restrepo</span>
-                    <span class="demo-btn-role">Consultor</span>
-                  </button>
-                  <button type="button" class="demo-btn-pill demo-btn-pill-inactive" data-email="diana.torres@empresa.com" data-role="INACTIVO" title="Prueba el bloqueo de usuarios inactivos en base de datos">
-                    <span class="demo-btn-name">Diana Torres</span>
-                    <span class="demo-btn-role" style="color: var(--danger);">Inactiva (Test)</span>
-                  </button>
+                <div style="font-size: 0.72rem; color: var(--text-muted); line-height: 1.4;">
+                  Admin: <code>carlos.mendoza@empresa.com</code> | <code>password123</code>
                 </div>
               </div>
 
@@ -152,23 +136,9 @@
       const btnForgot = container.querySelector('#btn-forgot-password');
       if (btnForgot) {
         btnForgot.addEventListener('click', () => {
-          window.App.showToast('Contacte a un Administrador para reestablecer credenciales en la tabla usuarios.', 'info');
+          window.App.showToast('Contacte a un Administrador para reestablecer credenciales en la base de datos.', 'info');
         });
       }
-
-      // Selector de Cuentas Demo
-      container.querySelectorAll('.demo-btn-pill').forEach((btn) => {
-        btn.addEventListener('click', () => {
-          const email = btn.getAttribute('data-email');
-          emailInput.value = email;
-          passwordInput.value = 'password123';
-          errorBox.style.display = 'none';
-
-          // Resaltar temporalmente el campo
-          emailInput.focus();
-          window.App.showToast(`Credenciales cargadas: ${btn.getAttribute('data-role')}`, 'info');
-        });
-      });
 
       // Submit del formulario
       form.addEventListener('submit', async (e) => {
@@ -186,7 +156,7 @@
 
         // Estado de carga
         submitBtn.disabled = true;
-        btnText.textContent = 'Autenticando...';
+        btnText.textContent = 'Autenticando con el backend...';
         btnSpinner.style.display = 'inline-block';
 
         try {
@@ -203,7 +173,7 @@
             btnSpinner.style.display = 'none';
           }
         } catch (err) {
-          errorText.textContent = err.message || 'Error de conexión con el servicio de autenticación';
+          errorText.textContent = err.message || 'Error de conexión con el backend de Spring Boot';
           errorBox.style.display = 'flex';
           submitBtn.disabled = false;
           btnText.textContent = 'Acceder a la Plataforma';

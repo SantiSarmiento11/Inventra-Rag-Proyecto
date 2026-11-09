@@ -793,3 +793,99 @@
   text-align: center;
 }
 
+/* --------------------------------------------------------------------------
+   Vista: Consultas RAG & Asistente Inteligente (Integración con n8n)
+   -------------------------------------------------------------------------- */
+.rag-view-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.btn-template-query {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  text-align: left;
+  transition: var(--transition-fast);
+}
+
+.btn-template-query:hover {
+  background: var(--bg-hover);
+  border-color: var(--primary);
+  transform: translateX(2px);
+}
+
+.btn-template-icon {
+  color: var(--primary);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.btn-template-text {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  line-height: 1.35;
+}
+
+.rag-user-message {
+  display: flex;
+  justify-content: flex-end;
+  margin-left: 2rem;
+}
+
+.user-bubble {
+  background: var(--primary);
+  color: #ffffff;
+  padding: 0.65rem 0.95rem;
+  border-radius: 12px 12px 2px 12px;
+  max-width: 85%;
+  box-shadow: var(--shadow-sm);
+}
+
+.rag-system-message {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  margin-right: 2rem;
+}
+
+.rag-bot-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.bot-bubble {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: 2px 12px 12px 12px;
+  padding: 0.85rem 1rem;
+  flex: 1;
+  max-width: 95%;
+  box-shadow: var(--shadow-sm);
+}
+
+.rag-response-content strong {
+  color: var(--text-main);
+  font-weight: 600;
+}
+
+.rag-response-content li {
+  margin-left: 1.25rem;
+  list-style-type: disc;
+}
+
+

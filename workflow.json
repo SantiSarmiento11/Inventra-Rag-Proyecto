@@ -1,0 +1,237 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "inventario-rag",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "ea0e68ff-4a95-4137-9586-9313d45f2d79",
+      "name": "Webhook (Frontend Inventario)",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        80,
+        -464
+      ],
+      "webhookId": "inventario-rag-webhook-id"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body.consulta }}",
+        "options": {
+          "systemMessage": "Eres el asistente y analista de inventario de la plataforma Inventra.\n\nREGLA CRÍTICA Y OBLIGATORIA:\nPara responder a la pregunta del usuario sobre productos, existencias, precios, categorías o cualquier dato del inventario, DEBES invocar OBLIGATORIAMENTE la herramienta 'consulta_inventario_qdrant' para consultar la base de datos vectorial Qdrant.\n\nDirectrices de respuesta:\n1. Nunca respondas con suposiciones ni inventes datos; básate exclusivamente en lo que recupere la herramienta de Qdrant.\n2. Si la base vectorial devuelve resultados, redacta una respuesta clara, profesional, con viñetas y datos numéricos exactos (precios formateados, stock y alertas de stock crítico).\n3. Si la base vectorial Qdrant no devuelve información sobre el producto consultado o está vacía, indícalo cortésmente diciendo que dicho producto no se encuentra registrado en la base vectorial de inventario."
+        }
+      },
+      "id": "36f3c170-29ab-4b9a-b449-6edc68923ec1",
+      "name": "Agente RAG de Inventario",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        352,
+        -464
+      ]
+    },
+    {
+      "parameters": {
+        "name": "consulta_inventario_qdrant",
+        "description": "HERRAMIENTA OBLIGATORIA: Consulta y recupera semánticamente información de productos, existencias, precios, stock y especificaciones en la base de datos vectorial Qdrant."
+      },
+      "id": "ce2dc40b-f9d0-4ed2-84ae-a103e11c3c77",
+      "name": "Herramienta Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1,
+      "position": [
+        512,
+        -256
+      ]
+    },
+    {
+      "parameters": {
+        "qdrantCollection": {
+          "__rl": true,
+          "value": "inventario_productos",
+          "mode": "list",
+          "cachedResultName": "inventario_productos"
+        },
+        "options": {}
+      },
+      "id": "ee6c0779-63c7-43b7-b56e-7a236eab75a9",
+      "name": "Qdrant Vector Store",
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1,
+      "position": [
+        432,
+        64
+      ],
+      "credentials": {
+        "qdrantApi": {
+          "id": "TVzZpBJIPLGnsD9w",
+          "name": "Qdrant account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "deepseek-flash",
+        "options": {
+          "temperature": 0.1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatDeepSeek",
+      "typeVersion": 1,
+      "position": [
+        352,
+        -160
+      ],
+      "id": "ec7ef889-6266-460e-a4bf-4b80b3a944a9",
+      "name": "DeepSeek Chat Model",
+      "credentials": {
+        "deepSeekApi": {
+          "id": "FbMsrtHnlmxMJLCE",
+          "name": "DeepSeek account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "nvidia/nemotron-3.5-embed-1b"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsNvidia",
+      "typeVersion": 1,
+      "position": [
+        432,
+        272
+      ],
+      "id": "d78320e6-bbbf-43b6-b868-03768a55276b",
+      "name": "NVIDIA Nemotron Embeddings",
+      "credentials": {
+        "nvidiaApi": {
+          "id": "JUcBN387S134ie0o",
+          "name": "NVIDIA Nemotron account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({\n  respuesta: $json.output || \"No se obtuvo respuesta del modelo.\",\n  fuente: \"n8n RAG (DeepSeek + Qdrant + NVIDIA Nemotron)\",\n  timestamp: $now.toISO()\n}) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "name": "Access-Control-Allow-Origin",
+                "value": "*"
+              },
+              {
+                "name": "Access-Control-Allow-Methods",
+                "value": "POST, OPTIONS, GET"
+              },
+              {
+                "name": "Access-Control-Allow-Headers",
+                "value": "Content-Type, Authorization, Accept"
+              }
+            ]
+          }
+        }
+      },
+      "id": "f136bf62-2370-4a70-b577-f044016382c6",
+      "name": "Responder al Frontend",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        720,
+        -464
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook (Frontend Inventario)": {
+      "main": [
+        [
+          {
+            "node": "Agente RAG de Inventario",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agente RAG de Inventario": {
+      "main": [
+        [
+          {
+            "node": "Responder al Frontend",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Herramienta Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "Agente RAG de Inventario",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Herramienta Vector Store",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeek Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Agente RAG de Inventario",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Herramienta Vector Store",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "NVIDIA Nemotron Embeddings": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "59e51ea816815f22c54ec1aa215cc5ffa179289dce74663e88b1aaad25a76ba2"
+  }
+}

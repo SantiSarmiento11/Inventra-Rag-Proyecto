@@ -26,4 +26,10 @@ public class UsuarioResponseDTO {
     private LocalDateTime fechaCreacion;
 
     private List<String> roles;
+
+    @JsonProperty("roleIds")
+    private List<Long> roleIds;
+
+    @JsonProperty("roles_detail")
+    private List<RolDTO> rolesDetail;
 }

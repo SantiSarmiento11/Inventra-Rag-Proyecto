@@ -1,22 +1,38 @@
 /**
  * Orquestador Principal de la Aplicación
- * Enrutamiento SPA, control de vistas, autenticación de usuarios y notificaciones Toast.
- * Integra la identidad de marca Inventra analizada en /assets/Inventra.png.
- * Cero emojis.
+ * Enrutamiento SPA, control de vistas y autenticación obligatoria contra Backend Spring Boot.
+ * Cero simulación ni datos mockeados.
  */
 
 (function () {
   window.App = {
     currentRoute: 'dashboard',
 
-    init: function () {
-      // Verificación de autenticación: si no hay sesión activa, redirigir a la página de login separada
-      const user = window.API_CONFIG.getCurrentUser();
+    init: async function () {
+      const token = window.API_CONFIG.getToken();
       const currentHash = window.location.hash.replace('#', '');
 
-      if (!user && currentHash !== 'mer') {
+      // Exigir autenticación real con token JWT para acceder a la aplicación
+      if (!token && currentHash !== 'mer') {
         window.location.replace('login.html');
         return;
+      }
+
+      if (token) {
+        try {
+          // Validar el token en vivo contra el backend (/api/auth/me)
+          const user = await window.ApiService.getMe();
+          if (!user || !user.id_usuario) {
+            window.API_CONFIG.clearSession();
+            window.location.replace('login.html');
+            return;
+          }
+        } catch (e) {
+          console.warn('Sesión no autorizada o expirada:', e);
+          window.API_CONFIG.clearSession();
+          window.location.replace('login.html');
+          return;
+        }
       }
 
       this.bindNavigation();
@@ -46,7 +62,7 @@
           this.showToast('Sesión finalizada. Redirigiendo...', 'info');
           setTimeout(() => {
             window.location.replace('login.html');
-          }, 400);
+          }, 300);
         }
       });
     },
@@ -57,16 +73,17 @@
       const sidebarFooterContainer = document.getElementById('sidebar-user-footer');
 
       if (user) {
-        const initials = user.nombre
+        const initials = (user.nombre || 'U')
           .split(' ')
           .map((n) => n[0])
           .slice(0, 2)
           .join('')
           .toUpperCase();
 
-        const roleName = user.roles && user.roles.length > 0
-          ? user.roles[0].nombre
-          : 'USUARIO';
+        let roleName = 'USUARIO';
+        if (user.roles && user.roles.length > 0) {
+          roleName = typeof user.roles[0] === 'string' ? user.roles[0] : (user.roles[0].nombre || 'USUARIO');
+        }
 
         if (userProfileContainer) {
           userProfileContainer.innerHTML = `
@@ -88,7 +105,7 @@
             <div style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
               <div style="display: flex; align-items: center; gap: 0.5rem;">
                 <span class="status-dot"></span>
-                <span style="font-size: 0.75rem; color: var(--text-sidebar-muted);">Sesión: ${escapeHtml(user.nombre.split(' ')[0])}</span>
+                <span style="font-size: 0.75rem; color: var(--text-sidebar-muted);">Sesión: ${escapeHtml((user.nombre || '').split(' ')[0])}</span>
               </div>
               <a href="login.html" title="Cambiar de usuario" style="color: var(--text-sidebar-muted); font-size: 0.7rem; text-decoration: none;">Salir</a>
             </div>
@@ -116,10 +133,10 @@
     },
 
     handleHashChange: function () {
-      const user = window.API_CONFIG.getCurrentUser();
+      const token = window.API_CONFIG.getToken();
       let hash = window.location.hash.replace('#', '') || 'dashboard';
 
-      if (!user && hash !== 'mer') {
+      if (!token && hash !== 'mer') {
         window.location.replace('login.html');
         return;
       }
@@ -128,7 +145,7 @@
     },
 
     navigateTo: function (routeName) {
-      const validRoutes = ['dashboard', 'products', 'users', 'roles', 'mer'];
+      const validRoutes = ['dashboard', 'products', 'users', 'roles', 'rag', 'mer'];
       const route = validRoutes.includes(routeName) ? routeName : 'dashboard';
       this.currentRoute = route;
 
@@ -149,11 +166,11 @@
       const routeMeta = {
         dashboard: {
           title: 'Panel de Control - Inventra',
-          subtitle: 'Visión general de existencias, usuarios y estado del sistema'
+          subtitle: 'Visión general de existencias, usuarios y estado del sistema (PostgreSQL)'
         },
         products: {
           title: 'Catálogo de Productos',
-          subtitle: 'Gestión y control de existencias de la tabla productos'
+          subtitle: 'Gestión y control de existencias de la tabla productos en tiempo real'
         },
         users: {
           title: 'Directorio de Usuarios',
@@ -162,6 +179,10 @@
         roles: {
           title: 'Roles y Control de Acceso (RBAC)',
           subtitle: 'Gestión de roles y asignación matricial en roles_permisos'
+        },
+        rag: {
+          title: 'Consultas RAG de Inventario (n8n)',
+          subtitle: 'Endpoint frontend para procesamiento con n8n y modelos de lenguaje'
         },
         mer: {
           title: 'Modelo Entidad-Relación y API Endpoints',
@@ -184,16 +205,22 @@
       container.style.transform = 'translateY(4px)';
 
       setTimeout(async () => {
-        if (route === 'dashboard' && window.Views.Dashboard) {
-          await window.Views.Dashboard.render(container);
-        } else if (route === 'products' && window.Views.Products) {
-          await window.Views.Products.render(container);
-        } else if (route === 'users' && window.Views.Users) {
-          await window.Views.Users.render(container);
-        } else if (route === 'roles' && window.Views.Roles) {
-          await window.Views.Roles.render(container);
-        } else if (route === 'mer' && window.Views.ApiDocs) {
-          await window.Views.ApiDocs.render(container);
+        try {
+          if (route === 'dashboard' && window.Views.Dashboard) {
+            await window.Views.Dashboard.render(container);
+          } else if (route === 'products' && window.Views.Products) {
+            await window.Views.Products.render(container);
+          } else if (route === 'users' && window.Views.Users) {
+            await window.Views.Users.render(container);
+          } else if (route === 'roles' && window.Views.Roles) {
+            await window.Views.Roles.render(container);
+          } else if (route === 'rag' && window.Views.RagChat) {
+            await window.Views.RagChat.render(container);
+          } else if (route === 'mer' && window.Views.ApiDocs) {
+            await window.Views.ApiDocs.render(container);
+          }
+        } catch (err) {
+          console.error(`Error renderizando vista ${route}:`, err);
         }
 
         container.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
