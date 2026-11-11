@@ -220,3 +220,9 @@ Generar reporte de cobertura de codigo con JaCoCo:
 ## Monitoreo, Telemetria y Registro de Eventos
 
 Se utiliza Logback estructurado a traves de SLF4J, categorizando logs en niveles `INFO`, `WARN` y `ERROR`. Cada transaccion contiene el ID del operador que realizo la modificacion de inventario, permitiendo un rastro de auditoria inmutable.
+
+## Consideraciones de Seguridad
+
+- Filtro `JwtAuthenticationFilter` que intercepta cada peticion HTTP para validar firma y expiracion del token.
+- Contraseñas cifradas mediante algoritmo `BCryptPasswordEncoder` con factor de coste 12.
+- Proteccion contra ataques CSRF deshabilitada de manera justificada exclusivamente para endpoints sin estado con tokens portadores (Stateless REST API).
