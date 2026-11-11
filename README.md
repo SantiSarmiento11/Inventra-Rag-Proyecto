@@ -171,3 +171,14 @@ pip install qdrant-client sentence-transformers
 python poblar_qdrant.py
 ```
 El script genera representaciones vectoriales densas para cada producto e indexa los registros con identificadores unicos.
+
+### Especificacion de Endpoints REST
+
+| Metodo | Ruta | Descripcion | Autorizacion |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/auth/login` | Autenticacion y recepcion de JWT | Publico |
+| `GET` | `/api/productos` | Listado paginado de inventario | Autenticado |
+| `POST` | `/api/productos` | Creacion de nuevo producto | `ROLE_ADMIN` |
+| `GET` | `/api/dashboard/stats` | Metricas y totales de inventario | Autenticado |
+| `GET` | `/api/roles` | Listado de roles del sistema | `ROLE_ADMIN` |
+| `GET` | `/api/permisos` | Consulta de permisos asignados | `ROLE_ADMIN` |
