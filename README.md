@@ -130,3 +130,15 @@ cd backend
 # En Windows:
 gradlew.bat clean build -x test
 ```
+
+### Ejecucion del Sistema
+
+Iniciar la aplicacion Spring Boot:
+```bash
+./gradlew bootRun
+```
+
+Acceder a los puntos de enlace:
+- Servicio Backend: `http://localhost:8080`
+- Documentacion Swagger UI: `http://localhost:8080/swagger-ui.html`
+- OpenAPI JSON: `http://localhost:8080/v3/api-docs`
