@@ -84,3 +84,11 @@ El sistema combina una infraestructura de persistencia mixta y una logica transa
 - **SpringDoc OpenAPI**: Generacion automatica de documentacion Swagger para validacion de endpoints.
 - **Colecciones Qdrant**: Indexacion de descripciones de productos con distancia coseno para recuperacion precisa.
 - **Workflows n8n**: Disparo de webhooks de alerta cuando los inventarios alcanzan umbrales minimos criticos.
+
+## Requisitos Previos del Sistema
+
+- Java Development Kit (JDK): Version 21 o 25 instalada y configurada en `JAVA_HOME`.
+- Python: Version 3.9 o superior (para ejecucion del script de vectorizacion `poblar_qdrant.py`).
+- Instancia de Qdrant: Ejecutandose localmente via Docker o accesible en la nube (puerto por defecto 6333).
+- Motor de Base de Datos: MySQL 8+ o PostgreSQL 14+.
+- Memoria RAM: Minimo 8 GB (recomendado 16 GB si se ejecutan microservicios y contenedor Qdrant en local).
