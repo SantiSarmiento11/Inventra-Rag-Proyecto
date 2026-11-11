@@ -196,3 +196,10 @@ Las respuestas de error adoptan el estandar RFC 7807 (Problem Details for HTTP A
 }
 ```
 Los errores de validacion en formularios retornan un codigo `400 Bad Request` con el desglose exacto de los campos afectados.
+
+## Estrategia de Pruebas y Aseguramiento de Calidad
+
+Se incluyen suites integrales de pruebas de software:
+- Pruebas unitarias de servicios de negocio y validacion de reglas de stock negativo.
+- Pruebas de integracion con base de datos en memoria (H2 / Testcontainers) para repositorios JPA.
+- Pruebas de seguridad verificando que endpoints protegidos rechacen peticiones anonimas con `401 Unauthorized`.
