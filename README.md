@@ -203,3 +203,16 @@ Se incluyen suites integrales de pruebas de software:
 - Pruebas unitarias de servicios de negocio y validacion de reglas de stock negativo.
 - Pruebas de integracion con base de datos en memoria (H2 / Testcontainers) para repositorios JPA.
 - Pruebas de seguridad verificando que endpoints protegidos rechacen peticiones anonimas con `401 Unauthorized`.
+
+### Comandos de Ejecucion de Pruebas
+
+Ejecutar todas las pruebas del proyecto mediante Gradle:
+```bash
+cd backend
+./gradlew test
+```
+
+Generar reporte de cobertura de codigo con JaCoCo:
+```bash
+./gradlew jacocoTestReport
+```
