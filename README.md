@@ -57,3 +57,7 @@ Inventra-Rag-Proyecto/
 │   └── src/main/java/...    # Controladores, servicios, modelos y seguridad Spring Boot
 └── frontend/                # Interfaces graficas y componentes de administracion
 ```
+
+## Stack Tecnologico
+
+El sistema combina una infraestructura de persistencia mixta y una logica transaccional tipada y confiable.
