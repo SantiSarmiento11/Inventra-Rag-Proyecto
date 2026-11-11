@@ -41,3 +41,19 @@ flowchart TD
     H[Script de Vectorizacion poblar_qdrant.py] -->|Embeddings| F
     D -->|Contexto Enriquecido| I[Motor RAG / Generacion de Respuesta]
 ```
+
+### Estructura de Directorios
+
+```text
+Inventra-Rag-Proyecto/
+├── .env.example             # Plantilla de configuracion de variables de entorno
+├── .gitignore               # Reglas de exclusion de control de versiones
+├── poblar_qdrant.py         # Script utilitario de generacion e indexacion de embeddings
+├── workflow.json            # Definicion exportable del flujo de orquestacion n8n
+├── backend/                 # Modulo de servicios y logica empresarial en Java
+│   ├── build.gradle         # Gestion de dependencias y plugins de Gradle
+│   ├── gradlew              # Wrapper de ejecucion Gradle para entornos Unix
+│   ├── gradlew.bat          # Wrapper de ejecucion Gradle para Windows
+│   └── src/main/java/...    # Controladores, servicios, modelos y seguridad Spring Boot
+└── frontend/                # Interfaces graficas y componentes de administracion
+```
