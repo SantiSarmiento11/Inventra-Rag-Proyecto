@@ -27,3 +27,17 @@ Inventra RAG sigue un enfoque arquitectonico desacoplado y orientado a servicios
 2. Capa de Base de Datos Relacional y Vectorial (MySQL / PostgreSQL para persistencia transaccional y Qdrant para indices vectoriales).
 3. Capa de Orquestacion RAG (n8n para automatizacion de pipelines y poblamiento de embeddings).
 4. Capa Frontend Administrativa (Cliente web para operadores y jefes de inventario).
+
+### Diagrama de Flujo Arquitectonico
+
+```mermaid
+flowchart TD
+    A[Cliente Web / Operador] -->|HTTP / JSON Web Token| B[Spring Boot Gateway / Controllers]
+    B --> C[Spring Security / Filtros JWT]
+    C --> D[Capa de Servicios de Negocio]
+    D -->|JPA / Hibernate| E[(Base de Datos Relacional)]
+    D -->|HTTP REST Client| F[(Qdrant Vector Database)]
+    G[Pipeline n8n Automation] -->|Webhook / API| B
+    H[Script de Vectorizacion poblar_qdrant.py] -->|Embeddings| F
+    D -->|Contexto Enriquecido| I[Motor RAG / Generacion de Respuesta]
+```
