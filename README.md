@@ -239,3 +239,11 @@ Se recomienda el despliegue orquestado mediante Docker Compose o Kubernetes:
 - Consultas JPA optimizadas con proyecciones y `@EntityGraph` para prevenir el problema de N+1 consultas.
 - Pool de conexiones a base de datos gestionado mediante HikariCP con dimensionamiento acorde a la carga concurrente.
 - Cache de segundo nivel para productos y categorias de alta rotacion de lectura.
+
+## Matriz de Resolucion de Incidencias
+
+| Sintoma | Causa Frecuente | Procedimiento de Resolucion |
+| :--- | :--- | :--- |
+| Error de conexion a base de datos al arrancar | Credenciales incorrectas o servicio inactivo | Validar variables `DB_URL`, `DB_USERNAME` y estado del demonio de base de datos. |
+| Excepcion de conexion rechazada hacia Qdrant | Contenedor de Qdrant detenido | Verificar con `docker ps` y reiniciar con `docker start <container_id>`. |
+| Token JWT rechazado como invalido | Desincronizacion horaria o clave secreta modificada | Comprobar sincronizacion de reloj del sistema y correspondencia de `JWT_SECRET`. |
