@@ -19,3 +19,11 @@ La administracion de almacenes e inventarios a gran escala enfrenta comunmente d
 - Seguridad perimetral con autenticacion basada en JSON Web Tokens (JWT) y control de acceso basado en roles (RBAC).
 - Orquestacion de flujos de notificacion automatica ante caidas en puntos de reorden y pedidos de abastecimiento.
 - Interoperabilidad completa a traves de una API REST documentada bajo el estandar OpenAPI 3.
+
+## Arquitectura del Sistema
+
+Inventra RAG sigue un enfoque arquitectonico desacoplado y orientado a servicios:
+1. Nucleo Backend (Spring Boot 4.1, Spring Data JPA, Spring Security).
+2. Capa de Base de Datos Relacional y Vectorial (MySQL / PostgreSQL para persistencia transaccional y Qdrant para indices vectoriales).
+3. Capa de Orquestacion RAG (n8n para automatizacion de pipelines y poblamiento de embeddings).
+4. Capa Frontend Administrativa (Cliente web para operadores y jefes de inventario).
