@@ -106,3 +106,16 @@ Configurar el archivo `.env` en la raiz o en el modulo `backend/` a partir de `.
 | `JWT_SECRET` | Clave simetrica HMAC-SHA256 para firma de tokens | `5367566B59703373367639792F423F45...` |
 | `JWT_EXPIRATION` | Tiempo de vida del token en milisegundos | `86400000` (24 horas) |
 | `QDRANT_HOST` | Host del motor de base de datos vectorial | `http://localhost:6333` |
+
+## Guia de Instalacion y Despliegue Local
+
+1. Clonar el repositorio:
+```bash
+git clone https://github.com/SantiSarmiento11/Inventra-Rag-Proyecto.git
+cd Inventra-Rag-Proyecto
+```
+
+2. Levantar la instancia de Qdrant mediante Docker:
+```bash
+docker run -p 6333:6333 -p 6334:6334 -v $(pwd)/qdrant_storage:/qdrant/storage:z qdrant/qdrant
+```
