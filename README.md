@@ -61,3 +61,12 @@ Inventra-Rag-Proyecto/
 ## Stack Tecnologico
 
 El sistema combina una infraestructura de persistencia mixta y una logica transaccional tipada y confiable.
+
+### Backend y Persistencia
+
+- ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white) Entorno de ejecucion backend con Java 25.
+- ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white) Framework empresarial para microservicios y APIs REST.
+- ![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white) Marco de seguridad, autorizacion y proteccion de recursos.
+- ![Gradle](https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white) Sistema de construccion y gestion declarativa de dependencias.
+- ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white) Mecanismo de sesiones sin estado e intercambio seguro de identidades.
+- ![Qdrant](https://img.shields.io/badge/Qdrant-DC2626?style=for-the-badge&logo=qdrant&logoColor=white) Motor vectorial para almacenamiento de embeddings y busqueda por similitud de coseno.
