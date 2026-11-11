@@ -182,3 +182,17 @@ El script genera representaciones vectoriales densas para cada producto e indexa
 | `GET` | `/api/dashboard/stats` | Metricas y totales de inventario | Autenticado |
 | `GET` | `/api/roles` | Listado de roles del sistema | `ROLE_ADMIN` |
 | `GET` | `/api/permisos` | Consulta de permisos asignados | `ROLE_ADMIN` |
+
+### Gestion de Errores y Excepciones
+
+Las respuestas de error adoptan el estandar RFC 7807 (Problem Details for HTTP APIs):
+```json
+{
+  "timestamp": "2026-11-11T12:00:00Z",
+  "status": 404,
+  "error": "Not Found",
+  "message": "El producto solicitado con el ID especificado no existe",
+  "path": "/api/productos/999"
+}
+```
+Los errores de validacion en formularios retornan un codigo `400 Bad Request` con el desglose exacto de los campos afectados.
