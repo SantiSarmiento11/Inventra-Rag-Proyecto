@@ -151,3 +151,10 @@ El sistema opera bajo un flujo estructurado de gestion y recuperacion inteligent
 3. Operaciones de alta, actualizacion y movimiento de stock a traves de endpoints protegidos.
 4. Poblamiento y actualizacion de indices vectoriales al detectar mutaciones en los registros de inventario.
 5. Evaluacion de consultas semanticas complejas via embeddings y proyeccion RAG.
+
+### Flujo de Interaccion de Usuario
+
+- **Inicio de Sesion**: El usuario ingresa credenciales en `/api/auth/login` y recibe su sesion segura.
+- **Panel de Control**: Visualizacion de metricas clave, inventario critico y graficas de rotacion de stock.
+- **Catalogo de Productos**: Busqueda tradicional por codigo SKU y busqueda semantica mediante descripciones aproximadas.
+- **Modulo de Permisos y Roles**: Administracion granular de accesos por usuario.
