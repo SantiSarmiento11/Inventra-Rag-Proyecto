@@ -70,3 +70,11 @@ El sistema combina una infraestructura de persistencia mixta y una logica transa
 - ![Gradle](https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white) Sistema de construccion y gestion declarativa de dependencias.
 - ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white) Mecanismo de sesiones sin estado e intercambio seguro de identidades.
 - ![Qdrant](https://img.shields.io/badge/Qdrant-DC2626?style=for-the-badge&logo=qdrant&logoColor=white) Motor vectorial para almacenamiento de embeddings y busqueda por similitud de coseno.
+
+### Frontend y Automatizacion
+
+- ![n8n](https://img.shields.io/badge/n8n-EA4B71?style=for-the-badge&logo=n8n&logoColor=white) Motor de orquestacion de flujos y pipelines de datos asincronos.
+- ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) Scripts de soporte para procesamiento matricial y preparacion de colecciones vectoriales.
+- ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black) Dinamismo del panel administrativo del cliente web.
+- ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) Formatos estandar de interfaz para gestion de existencias.
+- ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white) Estilos y diseno responsivo para terminales moviles y de escritorio.
