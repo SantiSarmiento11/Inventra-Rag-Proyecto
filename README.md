@@ -142,3 +142,12 @@ Acceder a los puntos de enlace:
 - Servicio Backend: `http://localhost:8080`
 - Documentacion Swagger UI: `http://localhost:8080/swagger-ui.html`
 - OpenAPI JSON: `http://localhost:8080/v3/api-docs`
+
+## Funcionamiento del Sistema
+
+El sistema opera bajo un flujo estructurado de gestion y recuperacion inteligente:
+1. Inicializacion y comprobacion de tablas y roles basicos (`ROLE_ADMIN`, `ROLE_OPERADOR`, `ROLE_AUDITOR`) mediante `DataInitializer`.
+2. Autenticacion del operador y emision de token portador (Bearer JWT).
+3. Operaciones de alta, actualizacion y movimiento de stock a traves de endpoints protegidos.
+4. Poblamiento y actualizacion de indices vectoriales al detectar mutaciones en los registros de inventario.
+5. Evaluacion de consultas semanticas complejas via embeddings y proyeccion RAG.
