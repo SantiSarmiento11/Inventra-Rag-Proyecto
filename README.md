@@ -233,3 +233,9 @@ Se recomienda el despliegue orquestado mediante Docker Compose o Kubernetes:
 - Contenedor Backend: Imagen ligera de OpenJDK Eclipse Temurin.
 - Contenedor Base de Datos: Instancia de PostgreSQL con almacenamiento persistente montado.
 - Contenedor Qdrant: Cluster de nodos vectoriales con configuracion de persistencia SSD.
+
+## Optimizacion de Rendimiento y Escalabilidad
+
+- Consultas JPA optimizadas con proyecciones y `@EntityGraph` para prevenir el problema de N+1 consultas.
+- Pool de conexiones a base de datos gestionado mediante HikariCP con dimensionamiento acorde a la carga concurrente.
+- Cache de segundo nivel para productos y categorias de alta rotacion de lectura.
