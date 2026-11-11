@@ -226,3 +226,10 @@ Se utiliza Logback estructurado a traves de SLF4J, categorizando logs en niveles
 - Filtro `JwtAuthenticationFilter` que intercepta cada peticion HTTP para validar firma y expiracion del token.
 - Contraseñas cifradas mediante algoritmo `BCryptPasswordEncoder` con factor de coste 12.
 - Proteccion contra ataques CSRF deshabilitada de manera justificada exclusivamente para endpoints sin estado con tokens portadores (Stateless REST API).
+
+## Despliegue y Puesta en Produccion
+
+Se recomienda el despliegue orquestado mediante Docker Compose o Kubernetes:
+- Contenedor Backend: Imagen ligera de OpenJDK Eclipse Temurin.
+- Contenedor Base de Datos: Instancia de PostgreSQL con almacenamiento persistente montado.
+- Contenedor Qdrant: Cluster de nodos vectoriales con configuracion de persistencia SSD.
