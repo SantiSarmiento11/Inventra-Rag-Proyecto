@@ -254,3 +254,7 @@ Se recomienda el despliegue orquestado mediante Docker Compose o Kubernetes:
 2. Crear una rama descriptiva (`git checkout -b feature/modulo-alertas`).
 3. Confirmar modificaciones siguiendo Conventional Commits (`git commit -m 'feat: adicionar endpoint de alertas de stock'`).
 4. Subir la rama y emitir un Pull Request sustentado con pruebas unitarias.
+
+## Autoria y Creditos del Proyecto
+
+Disenado y desarrollado por [Santiago Sarmiento](https://github.com/SantiSarmiento11) como solucion de vanguardia en integracion RAG y gestion de almacenes inteligentes.
