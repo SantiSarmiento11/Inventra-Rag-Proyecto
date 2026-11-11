@@ -216,3 +216,7 @@ Generar reporte de cobertura de codigo con JaCoCo:
 ```bash
 ./gradlew jacocoTestReport
 ```
+
+## Monitoreo, Telemetria y Registro de Eventos
+
+Se utiliza Logback estructurado a traves de SLF4J, categorizando logs en niveles `INFO`, `WARN` y `ERROR`. Cada transaccion contiene el ID del operador que realizo la modificacion de inventario, permitiendo un rastro de auditoria inmutable.
