@@ -92,3 +92,17 @@ El sistema combina una infraestructura de persistencia mixta y una logica transa
 - Instancia de Qdrant: Ejecutandose localmente via Docker o accesible en la nube (puerto por defecto 6333).
 - Motor de Base de Datos: MySQL 8+ o PostgreSQL 14+.
 - Memoria RAM: Minimo 8 GB (recomendado 16 GB si se ejecutan microservicios y contenedor Qdrant en local).
+
+### Variables de Entorno y Configuracion
+
+Configurar el archivo `.env` en la raiz o en el modulo `backend/` a partir de `.env.example`:
+
+| Variable | Descripcion | Valor Ejemplo |
+| :--- | :--- | :--- |
+| `SERVER_PORT` | Puerto de escucha de la aplicacion Spring Boot | `8080` |
+| `DB_URL` | Cadena JDBC de conexion a la base de datos | `jdbc:postgresql://localhost:5432/inventra_db` |
+| `DB_USERNAME` | Usuario administrador de la base de datos | `inventra_user` |
+| `DB_PASSWORD` | Credencial secreta de acceso a datos | `secret_password` |
+| `JWT_SECRET` | Clave simetrica HMAC-SHA256 para firma de tokens | `5367566B59703373367639792F423F45...` |
+| `JWT_EXPIRATION` | Tiempo de vida del token en milisegundos | `86400000` (24 horas) |
+| `QDRANT_HOST` | Host del motor de base de datos vectorial | `http://localhost:6333` |
