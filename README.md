@@ -119,3 +119,14 @@ cd Inventra-Rag-Proyecto
 ```bash
 docker run -p 6333:6333 -p 6334:6334 -v $(pwd)/qdrant_storage:/qdrant/storage:z qdrant/qdrant
 ```
+
+### Compilacion y Construccion del Backend
+
+Ingresar al directorio `backend/` y compilar el proyecto utilizando el wrapper de Gradle:
+```bash
+cd backend
+# En Linux / macOS:
+./gradlew clean build -x test
+# En Windows:
+gradlew.bat clean build -x test
+```
