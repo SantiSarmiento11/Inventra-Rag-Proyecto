@@ -158,3 +158,16 @@ El sistema opera bajo un flujo estructurado de gestion y recuperacion inteligent
 - **Panel de Control**: Visualizacion de metricas clave, inventario critico y graficas de rotacion de stock.
 - **Catalogo de Productos**: Busqueda tradicional por codigo SKU y busqueda semantica mediante descripciones aproximadas.
 - **Modulo de Permisos y Roles**: Administracion granular de accesos por usuario.
+
+### Pipeline de Datos y Vectorizacion Qdrant
+
+Para cargar o sincronizar el catalogo de productos en la base vectorial:
+1. Configurar dependencias de Python:
+```bash
+pip install qdrant-client sentence-transformers
+```
+2. Ejecutar el script de poblamiento:
+```bash
+python poblar_qdrant.py
+```
+El script genera representaciones vectoriales densas para cada producto e indexa los registros con identificadores unicos.
